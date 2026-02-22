@@ -1,5 +1,7 @@
 # Todoist MCP Server ✅
 
+**English** | [中文](README_CN.md)
+
 [![PyPI](https://img.shields.io/pypi/v/todoist-mcp-helper)](https://pypi.org/project/todoist-mcp-helper/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
