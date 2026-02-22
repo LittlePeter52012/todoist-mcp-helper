@@ -1,6 +1,6 @@
 # Todoist MCP Server ✅
 
-[![PyPI](https://img.shields.io/pypi/v/todoist-mcp)](https://pypi.org/project/todoist-mcp/)
+[![PyPI](https://img.shields.io/pypi/v/todoist-mcp-helper)](https://pypi.org/project/todoist-mcp-helper/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **Connect AI agents to your [Todoist](https://todoist.com) tasks** via the Model Context Protocol (MCP).
@@ -30,7 +30,7 @@ Create, search, complete, and manage your Todoist tasks — all from Claude, Gem
 ### Install
 
 ```bash
-pip install todoist-mcp
+pip install todoist-mcp-helper
 ```
 
 ### Get Your API Token
