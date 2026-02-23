@@ -33,7 +33,17 @@ Create, search, complete, and manage your Todoist tasks — all from Claude, Gem
 
 ## 🚀 Quick Start
 
-### Install
+### Option A: Quick Run with `uvx` (Recommended)
+
+No installation needed — runs in a temporary isolated environment:
+
+```bash
+uvx todoist-mcp-helper
+```
+
+> Don't have `uv`? Install it: `curl -LsSf https://astral.sh/uv/install.sh | sh`
+
+### Option B: Install with `pip`
 
 ```bash
 pip install todoist-mcp-helper
@@ -60,18 +70,40 @@ All credentials are passed via **environment variables** — no tokens in code.
 
 ### Claude Desktop
 
+Add to `claude_desktop_config.json`:
+
+<table><tr><th>uvx (recommended)</th><th>pip</th></tr><tr><td>
+
+```json
+{
+  "mcpServers": {
+    "todoist": {
+      "command": "uvx",
+      "args": ["todoist-mcp-helper"],
+      "env": {
+        "TODOIST_API_TOKEN": "your_token"
+      }
+    }
+  }
+}
+```
+
+</td><td>
+
 ```json
 {
   "mcpServers": {
     "todoist": {
       "command": "todoist-mcp",
       "env": {
-        "TODOIST_API_TOKEN": "your_api_token_here"
+        "TODOIST_API_TOKEN": "your_token"
       }
     }
   }
 }
 ```
+
+</td></tr></table>
 
 ### Gemini CLI
 
@@ -83,26 +115,43 @@ Add to `~/.gemini/settings.json`:
     "todoist": {
       "command": "todoist-mcp",
       "env": {
-        "TODOIST_API_TOKEN": "your_api_token_here"
+        "TODOIST_API_TOKEN": "your_token"
       }
     }
   }
 }
 ```
 
-### Cursor
+### Cursor / CherryStudio / Other MCP Clients
 
-Add to Cursor Settings → MCP:
+<table><tr><th>uvx</th><th>pip</th></tr><tr><td>
+
+```json
+{
+  "todoist": {
+    "command": "uvx",
+    "args": ["todoist-mcp-helper"],
+    "env": {
+      "TODOIST_API_TOKEN": "your_token"
+    }
+  }
+}
+```
+
+</td><td>
 
 ```json
 {
   "todoist": {
     "command": "todoist-mcp",
     "env": {
-      "TODOIST_API_TOKEN": "your_api_token_here"
+      "TODOIST_API_TOKEN": "your_token"
     }
   }
 }
+```
+
+</td></tr></table>
 ```
 
 ---

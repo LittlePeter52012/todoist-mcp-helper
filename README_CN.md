@@ -33,7 +33,17 @@
 
 ## 🚀 快速开始
 
-### 安装
+### 方式一：`uvx` 直接运行（推荐）
+
+无需安装，在临时隔离环境中直接运行：
+
+```bash
+uvx todoist-mcp-helper
+```
+
+> 没有 `uv`？一键安装：`curl -LsSf https://astral.sh/uv/install.sh | sh`
+
+### 方式二：`pip` 安装
 
 ```bash
 pip install todoist-mcp-helper
@@ -60,18 +70,40 @@ pip install todoist-mcp-helper
 
 ### Claude Desktop
 
+添加到 `claude_desktop_config.json`：
+
+<table><tr><th>uvx 方式（推荐）</th><th>pip 方式</th></tr><tr><td>
+
+```json
+{
+  "mcpServers": {
+    "todoist": {
+      "command": "uvx",
+      "args": ["todoist-mcp-helper"],
+      "env": {
+        "TODOIST_API_TOKEN": "你的Token"
+      }
+    }
+  }
+}
+```
+
+</td><td>
+
 ```json
 {
   "mcpServers": {
     "todoist": {
       "command": "todoist-mcp",
       "env": {
-        "TODOIST_API_TOKEN": "在此填入你的API Token"
+        "TODOIST_API_TOKEN": "你的Token"
       }
     }
   }
 }
 ```
+
+</td></tr></table>
 
 ### Gemini CLI
 
@@ -83,27 +115,43 @@ pip install todoist-mcp-helper
     "todoist": {
       "command": "todoist-mcp",
       "env": {
-        "TODOIST_API_TOKEN": "在此填入你的API Token"
+        "TODOIST_API_TOKEN": "你的Token"
       }
     }
   }
 }
 ```
 
-### Cursor
+### Cursor / CherryStudio / 其他 MCP 客户端
 
-在 Cursor 设置 → MCP 中添加：
+<table><tr><th>uvx 方式</th><th>pip 方式</th></tr><tr><td>
+
+```json
+{
+  "todoist": {
+    "command": "uvx",
+    "args": ["todoist-mcp-helper"],
+    "env": {
+      "TODOIST_API_TOKEN": "你的Token"
+    }
+  }
+}
+```
+
+</td><td>
 
 ```json
 {
   "todoist": {
     "command": "todoist-mcp",
     "env": {
-      "TODOIST_API_TOKEN": "在此填入你的API Token"
+      "TODOIST_API_TOKEN": "你的Token"
     }
   }
 }
 ```
+
+</td></tr></table>
 
 ---
 
