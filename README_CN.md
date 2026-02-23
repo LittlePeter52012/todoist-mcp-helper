@@ -8,6 +8,7 @@
 
 [![PyPI](https://img.shields.io/pypi/v/todoist-mcp-helper)](https://pypi.org/project/todoist-mcp-helper/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Sponsor](https://img.shields.io/badge/💖_赞助-946CE6?style=flat)](https://afdian.com/a/LittlePeter52012)
 
 **通过 MCP 协议将 AI 智能体连接到你的 [Todoist](https://todoist.com) 任务管理系统。**
 
@@ -239,16 +240,37 @@ pip install todoist-mcp-helper
 
 ## 💖 支持项目
 
-如果这个项目对你有帮助，欢迎支持作者：
+如果这个项目对你有帮助，欢迎请作者喝杯咖啡！
+你的支持是项目持续维护和迭代的最大动力 ✨
 
-<p align="center">
-  <a href="https://etherscan.io/address/0xD42c7c40785Fc00C707B859C541d42037611843b">
-    <img src="https://img.shields.io/badge/USDC%2FETH-0xD42c...843b-6c5ce7?style=for-the-badge&logo=ethereum&logoColor=white" alt="Donate USDC/ETH">
-  </a>
-</p>
+<table>
+<tr>
+<td align="center" width="50%">
 
-> 💡 支持 USDC / ETH / ERC-20 代币，网络：Ethereum Mainnet
-> `0xD42c7c40785Fc00C707B859C541d42037611843b`
+### ☕ 爱发电
+
+<a href="https://afdian.com/a/LittlePeter52012">
+  <img src="https://img.shields.io/badge/爱发电-946CE6?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0id2hpdGUiPjxwYXRoIGQ9Ik0xMiAyMS4zNWwtMS40NS0xLjMyQzUuNCAxNS4zNiAyIDEyLjI4IDIgOC41IDIgNS40MiA0LjQyIDMgNy41IDNjMS43NCAwIDMuNDEuODEgNC41IDIuMDlDMTMuMDkgMy44MSAxNC43NiAzIDE2LjUgMyAxOS41OCAzIDIyIDUuNDIgMjIgOC41YzAgMy43OC0zLjQgNi44Ni04LjU1IDExLjU0TDEyIDIxLjM1eiIvPjwvc3ZnPg==&logoColor=white" alt="在爱发电上支持我">
+</a>
+
+<sub>支持支付宝 / 微信支付</sub>
+
+</td>
+<td align="center" width="50%">
+
+### 💎 加密货币 (USDC / ERC-20)
+
+```
+0xD42c7c40785Fc00C707B859C541d42037611843b
+```
+
+<sub>支持 USDC、USDT、ETH — Ethereum 及 L2 网络均可</sub>
+
+</td>
+</tr>
+</table>
+
+> 每一份支持都是莫大的鼓励 — **感谢！** 🙏
 
 ---
 
