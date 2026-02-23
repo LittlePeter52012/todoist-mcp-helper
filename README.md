@@ -1,4 +1,8 @@
-# Todoist MCP Server ✅
+<p align="center">
+  <img src="icon.png" width="120" alt="Todoist MCP Helper Icon">
+</p>
+
+# Todoist MCP Helper ✅
 
 **English** | [中文](README_CN.md)
 
