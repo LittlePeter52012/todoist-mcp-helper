@@ -20,6 +20,10 @@ env/
 *.swo
 *~
 
+# Secrets
+.env
+.env.*
+
 # OS
 .DS_Store
 Thumbs.db

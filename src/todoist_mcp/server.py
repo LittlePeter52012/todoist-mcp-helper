@@ -1,11 +1,12 @@
 """
-Todoist MCP Server v1.0.0
+Todoist MCP Server v1.1.1
 Connect AI agents to your Todoist tasks via the Todoist API v1.
 """
 import os
 import sys
 import json
 import uuid
+import re
 import requests
 
 try:
@@ -25,6 +26,7 @@ mcp = FastMCP("todoist")
 
 # ─── Other Configuration ───
 BASE_URL = "https://api.todoist.com/api/v1"
+REQUEST_TIMEOUT = 30  # seconds — prevent hanging on network issues
 
 
 def _get_token() -> str:
@@ -112,7 +114,7 @@ def list_projects() -> str:
     Returns project names, IDs, and colors.
     """
     try:
-        res = requests.get(f"{BASE_URL}/projects", headers=_headers())
+        res = requests.get(f"{BASE_URL}/projects", headers=_headers(), timeout=REQUEST_TIMEOUT)
         res.raise_for_status()
         projects = _extract_results(res.json())
         if not projects:
@@ -143,7 +145,7 @@ def create_project(name: str, color: str = "", parent_id: str = "") -> str:
     if parent_id:
         body["parent_id"] = parent_id
     try:
-        res = requests.post(f"{BASE_URL}/projects", headers=_headers(), json=body)
+        res = requests.post(f"{BASE_URL}/projects", headers=_headers(), json=body, timeout=REQUEST_TIMEOUT)
         res.raise_for_status()
         p = res.json()
         return f"✅ Project created: '{p['name']}' (ID: {p['id']})"
@@ -172,7 +174,7 @@ def update_project(project_id: str, name: str = "", color: str = "", is_favorite
     if not body:
         return "Nothing to update. Provide at least one of: name, color, is_favorite."
     try:
-        res = requests.post(f"{BASE_URL}/projects/{project_id}", headers=_headers(), json=body)
+        res = requests.post(f"{BASE_URL}/projects/{project_id}", headers=_headers(), json=body, timeout=REQUEST_TIMEOUT)
         res.raise_for_status()
         p = res.json()
         return f"✅ Project updated: '{p['name']}' (ID: {p['id']})"
@@ -189,7 +191,7 @@ def delete_project(project_id: str) -> str:
         project_id: ID of the project to delete.
     """
     try:
-        res = requests.delete(f"{BASE_URL}/projects/{project_id}", headers=_headers())
+        res = requests.delete(f"{BASE_URL}/projects/{project_id}", headers=_headers(), timeout=REQUEST_TIMEOUT)
         res.raise_for_status()
         return f"✅ Project {project_id} deleted."
     except Exception as e:
@@ -218,7 +220,7 @@ def get_tasks(project_id: str = "", label: str = "", filter_str: str = "") -> st
     if filter_str:
         params["filter"] = filter_str
     try:
-        res = requests.get(f"{BASE_URL}/tasks", headers=_headers(), params=params)
+        res = requests.get(f"{BASE_URL}/tasks", headers=_headers(), params=params, timeout=REQUEST_TIMEOUT)
         res.raise_for_status()
         tasks = _extract_results(res.json())
         if not tasks:
@@ -237,7 +239,7 @@ def get_task(task_id: str) -> str:
         task_id: ID of the task.
     """
     try:
-        res = requests.get(f"{BASE_URL}/tasks/{task_id}", headers=_headers())
+        res = requests.get(f"{BASE_URL}/tasks/{task_id}", headers=_headers(), timeout=REQUEST_TIMEOUT)
         res.raise_for_status()
         t = res.json()
         lines = [_fmt_task(t)]
@@ -297,7 +299,7 @@ def create_task(
     if labels:
         body["labels"] = [l.strip() for l in labels.split(",")]
     try:
-        res = requests.post(f"{BASE_URL}/tasks", headers=_headers(), json=body)
+        res = requests.post(f"{BASE_URL}/tasks", headers=_headers(), json=body, timeout=REQUEST_TIMEOUT)
         res.raise_for_status()
         t = res.json()
         return f"✅ Task created: '{t['content']}' (ID: {t['id']})\n{_fmt_task(t)}"
@@ -343,7 +345,7 @@ def update_task(
     if not body:
         return "Nothing to update. Provide at least one field."
     try:
-        res = requests.post(f"{BASE_URL}/tasks/{task_id}", headers=_headers(), json=body)
+        res = requests.post(f"{BASE_URL}/tasks/{task_id}", headers=_headers(), json=body, timeout=REQUEST_TIMEOUT)
         res.raise_for_status()
         t = res.json()
         return f"✅ Task updated: '{t['content']}' (ID: {t['id']})\n{_fmt_task(t)}"
@@ -360,7 +362,7 @@ def close_task(task_id: str) -> str:
         task_id: ID of the task to close.
     """
     try:
-        res = requests.post(f"{BASE_URL}/tasks/{task_id}/close", headers=_headers())
+        res = requests.post(f"{BASE_URL}/tasks/{task_id}/close", headers=_headers(), timeout=REQUEST_TIMEOUT)
         res.raise_for_status()
         return f"✅ Task {task_id} completed."
     except Exception as e:
@@ -376,7 +378,7 @@ def reopen_task(task_id: str) -> str:
         task_id: ID of the task to reopen.
     """
     try:
-        res = requests.post(f"{BASE_URL}/tasks/{task_id}/reopen", headers=_headers())
+        res = requests.post(f"{BASE_URL}/tasks/{task_id}/reopen", headers=_headers(), timeout=REQUEST_TIMEOUT)
         res.raise_for_status()
         return f"✅ Task {task_id} reopened."
     except Exception as e:
@@ -392,7 +394,7 @@ def delete_task(task_id: str) -> str:
         task_id: ID of the task to delete.
     """
     try:
-        res = requests.delete(f"{BASE_URL}/tasks/{task_id}", headers=_headers())
+        res = requests.delete(f"{BASE_URL}/tasks/{task_id}", headers=_headers(), timeout=REQUEST_TIMEOUT)
         res.raise_for_status()
         return f"✅ Task {task_id} deleted."
     except Exception as e:
@@ -415,7 +417,7 @@ def list_sections(project_id: str = "") -> str:
     if project_id:
         params["project_id"] = project_id
     try:
-        res = requests.get(f"{BASE_URL}/sections", headers=_headers(), params=params)
+        res = requests.get(f"{BASE_URL}/sections", headers=_headers(), params=params, timeout=REQUEST_TIMEOUT)
         res.raise_for_status()
         sections = _extract_results(res.json())
         if not sections:
@@ -439,7 +441,7 @@ def create_section(name: str, project_id: str) -> str:
     """
     body = {"name": name, "project_id": project_id}
     try:
-        res = requests.post(f"{BASE_URL}/sections", headers=_headers(), json=body)
+        res = requests.post(f"{BASE_URL}/sections", headers=_headers(), json=body, timeout=REQUEST_TIMEOUT)
         res.raise_for_status()
         s = res.json()
         return f"✅ Section created: '{s['name']}' (ID: {s['id']})"
@@ -456,7 +458,7 @@ def delete_section(section_id: str) -> str:
         section_id: ID of the section to delete.
     """
     try:
-        res = requests.delete(f"{BASE_URL}/sections/{section_id}", headers=_headers())
+        res = requests.delete(f"{BASE_URL}/sections/{section_id}", headers=_headers(), timeout=REQUEST_TIMEOUT)
         res.raise_for_status()
         return f"✅ Section {section_id} deleted."
     except Exception as e:
@@ -473,7 +475,7 @@ def list_labels() -> str:
     List all personal labels in the user's Todoist account.
     """
     try:
-        res = requests.get(f"{BASE_URL}/labels", headers=_headers())
+        res = requests.get(f"{BASE_URL}/labels", headers=_headers(), timeout=REQUEST_TIMEOUT)
         res.raise_for_status()
         labels = _extract_results(res.json())
         if not labels:
@@ -500,7 +502,7 @@ def create_label(name: str, color: str = "") -> str:
     if color:
         body["color"] = color
     try:
-        res = requests.post(f"{BASE_URL}/labels", headers=_headers(), json=body)
+        res = requests.post(f"{BASE_URL}/labels", headers=_headers(), json=body, timeout=REQUEST_TIMEOUT)
         res.raise_for_status()
         lb = res.json()
         return f"✅ Label created: '{lb['name']}' (ID: {lb['id']})"
@@ -529,7 +531,7 @@ def get_comments(task_id: str = "", project_id: str = "") -> str:
     if project_id:
         params["project_id"] = project_id
     try:
-        res = requests.get(f"{BASE_URL}/comments", headers=_headers(), params=params)
+        res = requests.get(f"{BASE_URL}/comments", headers=_headers(), params=params, timeout=REQUEST_TIMEOUT)
         res.raise_for_status()
         comments = _extract_results(res.json())
         if not comments:
@@ -560,7 +562,7 @@ def create_comment(content: str, task_id: str = "", project_id: str = "") -> str
     if project_id:
         body["project_id"] = project_id
     try:
-        res = requests.post(f"{BASE_URL}/comments", headers=_headers(), json=body)
+        res = requests.post(f"{BASE_URL}/comments", headers=_headers(), json=body, timeout=REQUEST_TIMEOUT)
         res.raise_for_status()
         c = res.json()
         return f"✅ Comment added (ID: {c['id']}): {c['content']}"
@@ -581,7 +583,7 @@ def _get_all_tasks() -> list:
         params: dict = {}
         if cursor:
             params["cursor"] = cursor
-        res = requests.get(f"{BASE_URL}/tasks", headers=headers, params=params)
+        res = requests.get(f"{BASE_URL}/tasks", headers=headers, params=params, timeout=REQUEST_TIMEOUT)
         res.raise_for_status()
         data = res.json()
         if isinstance(data, list):
@@ -741,8 +743,12 @@ def set_api_token(token: str) -> str:
     Args:
         token: Your Todoist API Token (get from https://app.todoist.com/app/settings/integrations).
     """
+    # Validate token format: must be hex string of 40 characters
+    token = token.strip()
     if not token or len(token) < 10:
         return "❌ Invalid token. Please provide a valid Todoist API Token."
+    if not re.match(r'^[a-fA-F0-9]+$', token):
+        return "❌ Invalid token format. Todoist API tokens should be hexadecimal strings."
     os.environ["TODOIST_API_TOKEN"] = token
     # Verify the token works
     try:
@@ -750,13 +756,13 @@ def set_api_token(token: str) -> str:
             "Authorization": f"Bearer {token}",
             "Content-Type": "application/json",
         }
-        res = requests.get(f"{BASE_URL}/projects", headers=headers)
+        res = requests.get(f"{BASE_URL}/projects", headers=headers, timeout=REQUEST_TIMEOUT)
         res.raise_for_status()
         projects = _extract_results(res.json())
         return f"✅ API Token set successfully! Found {len(projects)} projects. Token is active for this session."
     except Exception as e:
         os.environ.pop("TODOIST_API_TOKEN", None)
-        return f"❌ Token verification failed: {e}. Token was not saved."
+        return f"❌ Token verification failed. Token was not saved."
 
 
 @mcp.tool()
@@ -765,7 +771,7 @@ def get_current_config() -> str:
     Show the current configuration status (whether API token is set, API base URL, etc).
     """
     token = os.environ.get("TODOIST_API_TOKEN", "")
-    token_status = f"✅ Set (ending in ...{token[-6:]})" if token else "❌ Not set"
+    token_status = f"✅ Set (ending in ...{token[-4:]})" if len(token) >= 4 else ("⚠️ Set (too short)" if token else "❌ Not set")
     return (
         f"🔧 Todoist MCP Configuration\n"
         f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"

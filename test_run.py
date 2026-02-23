@@ -1,7 +1,6 @@
 """
 Todoist MCP — API connectivity test.
 Usage: TODOIST_API_TOKEN=xxx python test_run.py
-       or just: python test_run.py  (if DEFAULT_API_TOKEN is set in server.py)
 """
 import os
 import sys
@@ -9,6 +8,7 @@ import requests
 
 TOKEN = os.environ.get("TODOIST_API_TOKEN", "")
 BASE_URL = "https://api.todoist.com/api/v1"
+REQUEST_TIMEOUT = 30
 
 
 def _extract(data):
@@ -34,7 +34,7 @@ def test_workflow():
 
     # --- 1. List Projects ---
     print("--- 1. Testing: List Projects ---")
-    res = requests.get(f"{BASE_URL}/projects", headers=headers)
+    res = requests.get(f"{BASE_URL}/projects", headers=headers, timeout=REQUEST_TIMEOUT)
     if res.status_code == 200:
         projects = _extract(res.json())
         print(f"✅ Found {len(projects)} projects:")
@@ -46,7 +46,7 @@ def test_workflow():
 
     # --- 2. List Active Tasks ---
     print("\n--- 2. Testing: List Active Tasks ---")
-    res = requests.get(f"{BASE_URL}/tasks", headers=headers)
+    res = requests.get(f"{BASE_URL}/tasks", headers=headers, timeout=REQUEST_TIMEOUT)
     if res.status_code == 200:
         tasks = _extract(res.json())
         print(f"✅ Found {len(tasks)} active tasks:")
@@ -63,7 +63,7 @@ def test_workflow():
 
     # --- 3. List Labels ---
     print("\n--- 3. Testing: List Labels ---")
-    res = requests.get(f"{BASE_URL}/labels", headers=headers)
+    res = requests.get(f"{BASE_URL}/labels", headers=headers, timeout=REQUEST_TIMEOUT)
     if res.status_code == 200:
         labels = _extract(res.json())
         print(f"✅ Found {len(labels)} labels:")
@@ -74,7 +74,7 @@ def test_workflow():
 
     # --- 4. List Sections ---
     print("\n--- 4. Testing: List Sections ---")
-    res = requests.get(f"{BASE_URL}/sections", headers=headers)
+    res = requests.get(f"{BASE_URL}/sections", headers=headers, timeout=REQUEST_TIMEOUT)
     if res.status_code == 200:
         sections = _extract(res.json())
         print(f"✅ Found {len(sections)} sections:")

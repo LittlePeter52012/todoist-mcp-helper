@@ -21,10 +21,10 @@ Create, search, complete, and manage your Todoist tasks — all from Claude, Gem
 | -------------- | ----------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
 | 📋 Tasks        | `list_tasks`, `get_task`, `create_task`, `update_task`, `complete_task`, `delete_task`, `reopen_task` | Full task CRUD with priority, due dates, labels    |
 | 🔍 Smart Search | `search_task_by_name`, `complete_task_by_name`, `delete_task_by_name`, `update_task_by_name`          | Find and operate on tasks by name (fuzzy matching) |
-| 📁 Projects     | `list_projects`, `create_project`, `get_project`, `delete_project`                                    | Manage projects                                    |
+| 📁 Projects     | `list_projects`, `create_project`, `update_project`, `delete_project`                                 | Manage projects                                    |
 | 📑 Sections     | `list_sections`, `create_section`, `delete_section`                                                   | Organize tasks into sections                       |
 | 🏷️ Labels       | `list_labels`, `create_label`                                                                         | Tag management                                     |
-| 💬 Comments     | `list_comments`, `add_comment`                                                                        | Task comments                                      |
+| 💬 Comments     | `get_comments`, `create_comment`                                                                      | Task & project comments                            |
 | ⚙️ Config       | `set_api_token`, `get_current_config`                                                                 | Runtime token management                           |
 
 **24 tools total** — the most comprehensive Todoist MCP server available.
@@ -94,7 +94,7 @@ Add to `claude_desktop_config.json`:
 {
   "mcpServers": {
     "todoist": {
-      "command": "todoist-mcp",
+      "command": "todoist-mcp-helper",
       "env": {
         "TODOIST_API_TOKEN": "your_token"
       }
@@ -109,11 +109,14 @@ Add to `claude_desktop_config.json`:
 
 Add to `~/.gemini/settings.json`:
 
+<table><tr><th>uvx (recommended)</th><th>pip</th></tr><tr><td>
+
 ```json
 {
   "mcpServers": {
     "todoist": {
-      "command": "todoist-mcp",
+      "command": "uvx",
+      "args": ["todoist-mcp-helper"],
       "env": {
         "TODOIST_API_TOKEN": "your_token"
       }
@@ -122,9 +125,61 @@ Add to `~/.gemini/settings.json`:
 }
 ```
 
-### Cursor / CherryStudio / Other MCP Clients
+</td><td>
 
-<table><tr><th>uvx</th><th>pip</th></tr><tr><td>
+```json
+{
+  "mcpServers": {
+    "todoist": {
+      "command": "todoist-mcp-helper",
+      "env": {
+        "TODOIST_API_TOKEN": "your_token"
+      }
+    }
+  }
+}
+```
+
+</td></tr></table>
+
+### Cursor
+
+Add to `.cursor/mcp.json`:
+
+<table><tr><th>uvx (recommended)</th><th>pip</th></tr><tr><td>
+
+```json
+{
+  "mcpServers": {
+    "todoist": {
+      "command": "uvx",
+      "args": ["todoist-mcp-helper"],
+      "env": {
+        "TODOIST_API_TOKEN": "your_token"
+      }
+    }
+  }
+}
+```
+
+</td><td>
+
+```json
+{
+  "mcpServers": {
+    "todoist": {
+      "command": "todoist-mcp-helper",
+      "env": {
+        "TODOIST_API_TOKEN": "your_token"
+      }
+    }
+  }
+}
+```
+
+</td></tr></table>
+
+### CherryStudio / Other MCP Clients
 
 ```json
 {
@@ -138,21 +193,25 @@ Add to `~/.gemini/settings.json`:
 }
 ```
 
-</td><td>
+### ModelScope (魔塔)
+
+Select **Stdio** mode in the MCP service configuration, then use:
 
 ```json
 {
-  "todoist": {
-    "command": "todoist-mcp",
-    "env": {
-      "TODOIST_API_TOKEN": "your_token"
+  "mcpServers": {
+    "todoist": {
+      "command": "uvx",
+      "args": ["todoist-mcp-helper"],
+      "env": {
+        "TODOIST_API_TOKEN": "your_token"
+      }
     }
   }
 }
 ```
 
-</td></tr></table>
-```
+Add `TODOIST_API_TOKEN` in the environment variables section with your API token value.
 
 ---
 
@@ -175,6 +234,21 @@ Change tokens without restarting:
 
 - **`set_api_token`** — Switch Todoist account at runtime
 - **`get_current_config`** — Check current configuration
+
+---
+
+## 💖 Support
+
+If this project helps you, consider supporting the author:
+
+<p align="center">
+  <a href="https://etherscan.io/address/0xD42c7c40785Fc00C707B859C541d42037611843b">
+    <img src="https://img.shields.io/badge/USDC%2FETH-0xD42c...843b-6c5ce7?style=for-the-badge&logo=ethereum&logoColor=white" alt="Donate USDC/ETH">
+  </a>
+</p>
+
+> 💡 Supports USDC / ETH / ERC-20 tokens on Ethereum Mainnet
+> `0xD42c7c40785Fc00C707B859C541d42037611843b`
 
 ---
 

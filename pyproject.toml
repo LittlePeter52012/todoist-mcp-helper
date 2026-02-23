@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "todoist-mcp-helper"
-version = "1.1.0"
+version = "1.1.1"
 description = "MCP Server for Todoist — Connect AI agents to your Todoist tasks"
 readme = "README.md"
 license = { text = "MIT" }
@@ -23,7 +23,8 @@ Homepage = "https://github.com/LittlePeter52012/todoist-mcp-helper"
 Issues = "https://github.com/LittlePeter52012/todoist-mcp-helper/issues"
 
 [project.scripts]
-todoist-mcp = "todoist_mcp.server:main"
+todoist-mcp-helper = "todoist_mcp.server:main"
+todoist-mcp = "todoist_mcp.server:main"  # backward-compatible alias
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/todoist_mcp"]

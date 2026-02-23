@@ -27,7 +27,7 @@ echo "✅ Installation complete!"
 echo ""
 
 # 4. Print the absolute path to the executable
-EXEC_PATH="$SCRIPT_DIR/venv/bin/todoist-mcp"
+EXEC_PATH="$SCRIPT_DIR/venv/bin/todoist-mcp-helper"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "📍 Executable path:"
 echo "   $EXEC_PATH"

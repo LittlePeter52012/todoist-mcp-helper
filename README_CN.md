@@ -21,10 +21,10 @@
 | ---------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
 | 📋 任务     | `list_tasks`, `get_task`, `create_task`, `update_task`, `complete_task`, `delete_task`, `reopen_task` | 完整的任务增删改查，支持优先级、截止日期、标签 |
 | 🔍 智能搜索 | `search_task_by_name`, `complete_task_by_name`, `delete_task_by_name`, `update_task_by_name`          | 按名称模糊匹配查找并操作任务                   |
-| 📁 项目     | `list_projects`, `create_project`, `get_project`, `delete_project`                                    | 项目管理                                       |
+| 📁 项目     | `list_projects`, `create_project`, `update_project`, `delete_project`                                 | 项目管理                                       |
 | 📑 分区     | `list_sections`, `create_section`, `delete_section`                                                   | 将任务组织到分区中                             |
 | 🏷️ 标签     | `list_labels`, `create_label`                                                                         | 标签管理                                       |
-| 💬 评论     | `list_comments`, `add_comment`                                                                        | 任务评论                                       |
+| 💬 评论     | `get_comments`, `create_comment`                                                                      | 任务和项目评论                                 |
 | ⚙️ 配置     | `set_api_token`, `get_current_config`                                                                 | 运行时 Token 管理                              |
 
 **共 24 个工具** — 功能最全面的 Todoist MCP 服务器。
@@ -94,7 +94,7 @@ pip install todoist-mcp-helper
 {
   "mcpServers": {
     "todoist": {
-      "command": "todoist-mcp",
+      "command": "todoist-mcp-helper",
       "env": {
         "TODOIST_API_TOKEN": "你的Token"
       }
@@ -109,11 +109,14 @@ pip install todoist-mcp-helper
 
 添加到 `~/.gemini/settings.json`：
 
+<table><tr><th>uvx 方式（推荐）</th><th>pip 方式</th></tr><tr><td>
+
 ```json
 {
   "mcpServers": {
     "todoist": {
-      "command": "todoist-mcp",
+      "command": "uvx",
+      "args": ["todoist-mcp-helper"],
       "env": {
         "TODOIST_API_TOKEN": "你的Token"
       }
@@ -122,9 +125,61 @@ pip install todoist-mcp-helper
 }
 ```
 
-### Cursor / CherryStudio / 其他 MCP 客户端
+</td><td>
 
-<table><tr><th>uvx 方式</th><th>pip 方式</th></tr><tr><td>
+```json
+{
+  "mcpServers": {
+    "todoist": {
+      "command": "todoist-mcp-helper",
+      "env": {
+        "TODOIST_API_TOKEN": "你的Token"
+      }
+    }
+  }
+}
+```
+
+</td></tr></table>
+
+### Cursor
+
+添加到 `.cursor/mcp.json`：
+
+<table><tr><th>uvx 方式（推荐）</th><th>pip 方式</th></tr><tr><td>
+
+```json
+{
+  "mcpServers": {
+    "todoist": {
+      "command": "uvx",
+      "args": ["todoist-mcp-helper"],
+      "env": {
+        "TODOIST_API_TOKEN": "你的Token"
+      }
+    }
+  }
+}
+```
+
+</td><td>
+
+```json
+{
+  "mcpServers": {
+    "todoist": {
+      "command": "todoist-mcp-helper",
+      "env": {
+        "TODOIST_API_TOKEN": "你的Token"
+      }
+    }
+  }
+}
+```
+
+</td></tr></table>
+
+### CherryStudio / 其他 MCP 客户端
 
 ```json
 {
@@ -138,20 +193,25 @@ pip install todoist-mcp-helper
 }
 ```
 
-</td><td>
+### 魔塔 ModelScope
+
+在 MCP 服务配置中选择 **Stdio** 模式，填入以下配置：
 
 ```json
 {
-  "todoist": {
-    "command": "todoist-mcp",
-    "env": {
-      "TODOIST_API_TOKEN": "你的Token"
+  "mcpServers": {
+    "todoist": {
+      "command": "uvx",
+      "args": ["todoist-mcp-helper"],
+      "env": {
+        "TODOIST_API_TOKEN": "你的Token"
+      }
     }
   }
 }
 ```
 
-</td></tr></table>
+环境变量配置区域添加 `TODOIST_API_TOKEN`，值填入你的 API Token。
 
 ---
 
@@ -174,6 +234,21 @@ pip install todoist-mcp-helper
 
 - **`set_api_token`** — 在运行时切换 Todoist 账号
 - **`get_current_config`** — 查看当前配置状态
+
+---
+
+## 💖 支持项目
+
+如果这个项目对你有帮助，欢迎支持作者：
+
+<p align="center">
+  <a href="https://etherscan.io/address/0xD42c7c40785Fc00C707B859C541d42037611843b">
+    <img src="https://img.shields.io/badge/USDC%2FETH-0xD42c...843b-6c5ce7?style=for-the-badge&logo=ethereum&logoColor=white" alt="Donate USDC/ETH">
+  </a>
+</p>
+
+> 💡 支持 USDC / ETH / ERC-20 代币，网络：Ethereum Mainnet
+> `0xD42c7c40785Fc00C707B859C541d42037611843b`
 
 ---
 
